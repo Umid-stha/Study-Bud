@@ -1,0 +1,26 @@
+{% extends 'main.html' %}
+{% block content %}
+<h1>Task Manager</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Add Task</button>
+</form>
+
+<div>
+    <ul>
+        {% for task in tasks %}
+            <li>
+                <form method="POST" action="{% url 'complete' task.id %}">
+                    {% csrf_token %}
+                    <input type="checkbox" name="completed" onchange="this.form.submit()" {% if task.completed %}checked{% endif %}>
+                    {{ task.title }}--<a href="{% url 'delete' task.id %}">Remove task</a>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+</body>
+</html>
+{%endblock%}
